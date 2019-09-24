@@ -53,6 +53,7 @@ AtomPojoProvider (apache cxf) | application/atom+xml | Always Selected | XXE | C
 
 ** Java Pebble Example **
 
+{% highlight java %}
 {% raw %}
 
 {% set cmd = 'id' %}
@@ -69,3 +70,4 @@ AtomPojoProvider (apache cxf) | application/atom+xml | Always Selected | XXE | C
      .newInstance(([bytes]).toArray()) }}
    
 {% endraw %}
+{% endhighlight %}
