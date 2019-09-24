@@ -71,3 +71,7 @@ AtomPojoProvider (apache cxf) | application/atom+xml | Always Selected | XXE | C
    
 {% endraw %}
 {% endhighlight %}
+
+**Resources**
+
+* [Pebble](https://research.securitum.com/server-side-template-injection-on-the-example-of-pebble/)
