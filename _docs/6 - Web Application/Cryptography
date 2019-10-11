@@ -1,7 +1,7 @@
 ---
-title: NoSQL Injection
+title: Cryptography
 category: Web Application
-order: 109
+order: 121
 ---
 
 Shoud be a grey or crystal/clear box test for crytpo, otherwise it is time consuming.  The goal should be to pivot off encryption for SQLi, Filenames for LFI/RFI, XSS...
