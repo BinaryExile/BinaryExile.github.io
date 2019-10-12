@@ -19,7 +19,7 @@ commix --level=3 --url="http://website/?arg=INJECT_HERE&arg2=argument"
 python commix.py --url="http://192.168.178.58/DVWA-1.0.8/vulnerabilities/exec/#" --data="ip=INJECT_HERE&submit=submit" --cookie="security=medium; PHPSESSID=nq30op434117mo7o2oe5bl7is4"
 {% endhighlight %}
 
-> **Command Injection from Code Review
+> **Command Injection from Code Review**
 
 **Java**
 
@@ -108,7 +108,9 @@ http://victim/file?arg=$({chmod,+x,/tmp/t})
 > **NodeJS Code Injection**
 
 Look for javascript errors in output with sqli or xss test strings:
+
 "SyntaxError: Unexpected token function"
+
 "SyntaxError: Unexpected end of input"
 
 Test for injection:
@@ -475,60 +477,6 @@ Online:
 
 > **XXE**
 
-* [SANS XXE](https://pen-testing.sans.org/blog/2017/12/08/entity-inception-exploiting-iis-net-with-xxe-vulnerabilities)
-* [OWASP XXE](https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing)
-* [OWASP XML Cheat Sheet](https://www.owasp.org/index.php/XML_Security_Cheat_Sheet)
-* [Youtube XXE](https://www.youtube.com/watch?v=DJaX4HN2gwQ)
-* [Microsoft XML Entity](https://msdn.microsoft.com/en-us/library/ms256483(v=vs.110).aspx)
-* [w3schools XML DTD](https://www.w3schools.com/xml/xml_dtd.asp)
-
-> **LDAP Injection**
-
-* [SANS](https://pen-testing.sans.org/blog/2017/11/27/understanding-and-exploiting-web-based-ldap)
-* [OWASP](https://www.owasp.org/index.php/Testing_for_LDAP_Injection_(OTG-INPVAL-006))
-
-
-> **PHP Autoload and Object Injection**
-* [PHP Autoload](https://hakre.wordpress.com/2013/02/10/php-autoload-invalid-classname-injection/)
-* [PHP Autoload](https://prezi.com/5hif_vurb56p/php-object-injection-revisited/)
-
-> **Useful Resources**
-
-* [Shells](http://laudanum.sourceforge.net)
-* [MongoDB](http://securitysynapse.blogspot.com/2015/07/intro-to-hacking-mongo-db.html)
-* [SQL Injection](https://www.netsparker.com/blog/web-security/sql-injection-cheat-sheet/)
-* [websec](https://websec.ca/kb/sql_injection)
-* [PentestMonkey](http://pentestmonkey.net/category/cheat-sheet/sql-injection)
-* [SQLInjection Wiki](http://www.sqlinjectionwiki.com)
-* [Access Injection Cheat Sheet](http://nibblesec.org/files/MSAccessSQLi/MSAccessSQLi.html)
-* [Command Injection](http://securitysynapse.blogspot.com/2015/07/intro-to-hacking-mongo-db.html)
-* [Fuzzing List](https://github.com/danielmiessler/SecLists/tree/master/Fuzzing)
-* [LFI Cheat Sheet](https://highon.coffee/blog/lfi-cheat-sheet/)
-* [LFI Shell 1](http://resources.infosecinstitute.com/local-file-inclusion-code-execution/)
-* [LFI Shell 2](https://highon.coffee/blog/lfi-cheat-sheet/)
-* [CGI-Bin](https://www.hellboundhackers.org/articles/read-article.php?article_id=7)
-* [XSS, SQL, LDAP, XPATH, XML Injection Test Strings](https://www.owasp.org/index.php/OWASP_Testing_Guide_Appendix_C:_Fuzz_Vectors)
-* [Informix, MSSQL, Oracle, MySQL, Postgres, DB2, Ingres SQL Injection Cheat Sheet](http://pentestmonkey.net/category/cheat-sheet)
-
-
-> **XPATH**
-
-{% highlight XML %}
-Query Examples
-///Member
-/Grops/Security/Member/[Name="J*"]
-///@type="0"
-
-Test Characters
-'
-"
-//
-' or '1'='1
-{% endhighlight %}
-
-
->**External Entity XML
-
 {% highlight XML %}
 
 Example 1:
@@ -562,10 +510,62 @@ Example 2:
 
 {% endhighlight %}
 
+* [SANS XXE](https://pen-testing.sans.org/blog/2017/12/08/entity-inception-exploiting-iis-net-with-xxe-vulnerabilities)
+* [OWASP XXE](https://www.owasp.org/index.php/XML_External_Entity_(XXE)_Processing)
+* [OWASP XML Cheat Sheet](https://www.owasp.org/index.php/XML_Security_Cheat_Sheet)
+* [Youtube XXE](https://www.youtube.com/watch?v=DJaX4HN2gwQ)
+* [Microsoft XML Entity](https://msdn.microsoft.com/en-us/library/ms256483(v=vs.110).aspx)
+* [w3schools XML DTD](https://www.w3schools.com/xml/xml_dtd.asp)
+
+> **LDAP Injection**
+
+* [SANS](https://pen-testing.sans.org/blog/2017/11/27/understanding-and-exploiting-web-based-ldap)
+* [OWASP](https://www.owasp.org/index.php/Testing_for_LDAP_Injection_(OTG-INPVAL-006))
+
+
+> **PHP Autoload and Object Injection**
+* [PHP Autoload](https://hakre.wordpress.com/2013/02/10/php-autoload-invalid-classname-injection/)
+* [PHP Autoload](https://prezi.com/5hif_vurb56p/php-object-injection-revisited/)
+
+
+> **XPATH**
+
+{% highlight XML %}
+Query Examples
+///Member
+/Grops/Security/Member/[Name="J*"]
+///@type="0"
+
+Test Characters
+'
+"
+//
+' or '1'='1
+{% endhighlight %}
+
+> **Useful Resources**
+
+* [Shells](http://laudanum.sourceforge.net)
+* [MongoDB](http://securitysynapse.blogspot.com/2015/07/intro-to-hacking-mongo-db.html)
+* [SQL Injection](https://www.netsparker.com/blog/web-security/sql-injection-cheat-sheet/)
+* [websec](https://websec.ca/kb/sql_injection)
+* [PentestMonkey](http://pentestmonkey.net/category/cheat-sheet/sql-injection)
+* [SQLInjection Wiki](http://www.sqlinjectionwiki.com)
+* [Access Injection Cheat Sheet](http://nibblesec.org/files/MSAccessSQLi/MSAccessSQLi.html)
+* [Command Injection](http://securitysynapse.blogspot.com/2015/07/intro-to-hacking-mongo-db.html)
+* [Fuzzing List](https://github.com/danielmiessler/SecLists/tree/master/Fuzzing)
+* [LFI Cheat Sheet](https://highon.coffee/blog/lfi-cheat-sheet/)
+* [LFI Shell 1](http://resources.infosecinstitute.com/local-file-inclusion-code-execution/)
+* [LFI Shell 2](https://highon.coffee/blog/lfi-cheat-sheet/)
+* [CGI-Bin](https://www.hellboundhackers.org/articles/read-article.php?article_id=7)
+* [XSS, SQL, LDAP, XPATH, XML Injection Test Strings](https://www.owasp.org/index.php/OWASP_Testing_Guide_Appendix_C:_Fuzz_Vectors)
+* [Informix, MSSQL, Oracle, MySQL, Postgres, DB2, Ingres SQL Injection Cheat Sheet](http://pentestmonkey.net/category/cheat-sheet)
 
 
 > **Useful Tools**
 
 * [SQLMap](http://sqlmap.org)
 * [Commix](http://www.kitploit.com/2015/04/commix-automated-all-in-one-os-command.html)
+
+
 
