@@ -35,6 +35,10 @@ LDAP | <code> ldapsearch [criteria] </code>
 
 **Windows:**
 
+**Kerberos:**
+
+NMAP | <code> nmap -p88 --script krb5-enum-users --script-args krb5-enum-users.realm="domain.com",userdb=/opt/userlist.txt [domain controler IP] </code>
+
 **SMB:**
 
 NBTSCAN for SMB | <code> nbtscan [IP Range] </code>
