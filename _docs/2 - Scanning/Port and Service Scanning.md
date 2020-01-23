@@ -4,6 +4,12 @@ category: Scanning
 order: 5
 ---
 
+>**Windows and AD**
+
+SMB Signing | <code> nmap --script smb-security-mode.nse -p445 192.168.1.1 </code>
+SMB2 Signing | <code> nmap --script smb2-secuirty-mode -p445 192.168.1.1 </code>
+
+
 >**Scanning a Large Network**
 
 Network Sweeping | <code> sudo masscan 17.0.0.0/8 -p0-1023 --rate 20000</code>
