@@ -6,8 +6,9 @@ order: 5
 
 >**Windows and AD**
 
-SMB Signing | <code> nmap --script smb-security-mode.nse -p445 192.168.1.1 </code>
-SMB2 Signing | <code> nmap --script smb2-secuirty-mode -p445 192.168.1.1 </code>
+SMB Signing | <code> nmap -n -Pn -sS --script smb-security-mode.nse -p445 192.168.1.1 </code>
+SMB2 Signing | <code> nmap -n -Pn -sS --script smb2-secuirty-mode -p445 192.168.1.1 </code>
+Resolve NBT Name | <code> nbtscan 192.168.1.1 </code>
 
 
 >**Scanning a Large Network**
