@@ -263,6 +263,7 @@ COPY temptable(name) to $$C:\test.txt$$
 
 --another way
 copy (select $$text$$) to $$c:\test.txt$$;
+copy (select convert_from(decode($$ENCODED_TEXT$$,$$base64),$$utf-8$$)) to $$C:\\folder\sub folder\file$$
 
 --verify it was written
 select * from temptable; --make sure it doesn't exist
