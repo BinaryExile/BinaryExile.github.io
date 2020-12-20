@@ -54,6 +54,7 @@ Find a drive | <code> sudo fdisk -l </code>
 Clone a drive | <code> dd if=/dev/sda of=/dev/sdd bs=1M </code>
 Create and Image | <code> sudo dd if=/dev/sdb of=~/USB_image </code>
 Mount an Image | <code> mount ~/USB_image /mnt/USB_image -o loop </code>
+Binary to hex text file | <code> xxd file.dll | cut -d" " -f 2-9 | sed 's/ //g' | tr -d '\n' > file.dll.txt </code>
 
 >**Network and Firewalls**
 
